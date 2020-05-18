@@ -1,0 +1,51 @@
+// cSpell Settings
+{
+  // Version of the setting file.  Always 0.1
+  "version": "0.1",
+  // language - current active spelling language
+  "language": "en",
+  // words - list of words to be always considered correct
+  "words": [
+    "Asgari",
+    "caspect",
+    "dropdown",
+    "earcut",
+    "ffprobe",
+    "fontawesome",
+    "fortawesome",
+    "gameid",
+    "Gegen",
+    "githubusercontent",
+    "hammertime",
+    "imshow",
+    "Interlap",
+    "intract",
+    "matroska",
+    "Mezzala",
+    "mkdirp",
+    "Omid",
+    "onend",
+    "onmove",
+    "onresize",
+    "panend",
+    "panstart",
+    "Playmaker",
+    "reactn",
+    "resizeend",
+    "resizemove",
+    "Shuttler",
+    "streetsidesoftware",
+    "Taka",
+    "Tiki",
+    "toastify",
+    "Trequartista",
+    "tsmerge",
+    "visualstudio",
+    "vsmarketplacebadge",
+    "xmlns"
+  ],
+  // flagWords - list of words to be always considered incorrect
+  // This is useful for offensive words and common spelling errors.
+  // For example "hte" should be "the"
+  "flagWords": ["hte"]
+}

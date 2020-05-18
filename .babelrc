@@ -1,0 +1,13 @@
+{
+  "env": {
+    "production": {
+      "plugins": ["emotion", "@emotion/babel-preset-css-prop"]
+    },
+    "development": {
+      "plugins": [
+        ["emotion", { "sourceMap": true }],
+        "@emotion/babel-preset-css-prop"
+      ]
+    }
+  }
+}
