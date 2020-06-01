@@ -214,9 +214,9 @@ const Viewer = () => {
       let layeredData = groupBy(dxf.entities, 'layer');
       // console.log('layered data: ', layeredData);
 
-      console.log(
-        Object.entries(layeredData).filter((item) => item[0] !== 'undefined')
-      );
+      // console.log(
+      //   Object.entries(layeredData).filter((item) => item[0] !== 'undefined')
+      // );
 
       let layer = pallet.selectAll('.layers').data(
         Object.entries(layeredData).filter((item) => item[0] !== 'undefined'),

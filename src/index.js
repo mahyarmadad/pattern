@@ -25,12 +25,16 @@ import * as d3 from 'd3';
 
 import 'typeface-roboto';
 
+import GetCal from './calculate/cal';
+import GetPlay from './calculate/play';
+import GetEnt from './calculate/entit';
+import GetPlay2 from './calculate/play2';
+
 const APP_ID = '4Eq4nzwWBgYDQTSNsbhTVzd4CsxTdRYTwKT9Ly2X';
 const REST_KEY = 'uNGSxAYnJbjs3BH4s3E';
 Parse.initialize(APP_ID, REST_KEY);
 Parse.serverURL = 'https://www.zegara.net/api/parse';
 // Parse.serverURL = 'http://localhost:1397/api/parse';
-
 Parse.LiveQuery.on('error', (error) => {
   console.log('Parse LiveQuery Error', error);
 });
@@ -57,6 +61,11 @@ window.areaPolygon = areaPolygon;
 
 window.getGlobal = getGlobal;
 window.setGlobal = setGlobal;
+
+window.GetCal = GetCal;
+window.GetPlay = GetPlay;
+window.GetEnt = GetEnt;
+window.GetPlay2 = GetPlay2;
 
 window.earcut = earcut;
 window.polygonClipping = polygonClipping;

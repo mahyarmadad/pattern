@@ -44,7 +44,7 @@ setGlobal({
     // 'patternMidCourt',
     // 'shotVolleySmash',
     // 'patternNet',
-    // 'aBase',
+    'aBase',
     // 'shotBackhand',
     // 'shotLob',
     // 'patternDefensive',

@@ -1,15 +1,40 @@
 import * as d3 from 'd3';
 import polygonClipping from 'polygon-clipping';
-import {color, text, colorHover} from './colors';
-import {getGlobal, setGlobal} from 'reactn';
+import { color, text, colorHover } from './colors';
+import { getGlobal, setGlobal } from 'reactn';
 // import {intersect} from 'mathjs';
 export const baseLayers = [
+  'aGrid',
+  'aCourt',
+  'playerPositionBeforeHitting',
+  'ballHittingPosition',
+  'ballPlacementBoundry',
+  'shotServe',
+  'shotGroundStrokes',
+  'condition',
+  'opponentPositionBeforeHitting',
+  'shotWithoutDrop',
+  'opponentPositionAfterHitting',
+  'shotGroundStrokesTopSpin',
+  'shotForehandTopSpin',
+  'shotForehand',
+  'shotVolley',
+  'shotLobBackhandUnderSpin',
+  'ballPlacementTarget',
   'patternServe',
   'patternReturn',
   'patternGroundStroke',
+  'shotGroundStrokesFlat',
+  'shotGroundStrokesUnderSpin',
+  'shotDrop',
   'patternMidCourt',
+  'shotVolleySmash',
   'patternNet',
+  'aBase',
+  'shotBackhand',
+  'shotLob',
   'patternDefensive',
+  'aHitter',
 ];
 
 // const boundLayers = str => {
@@ -64,7 +89,7 @@ export const findBound = (entity, local = false) => {
   let minX, minY, maxX, maxY;
   let start = true;
   if (entity.type === 'LWPOLYLINE' || entity.type === 'LINE') {
-    for (let {x, y} of local ? entity.localVertices : entity.vertices) {
+    for (let { x, y } of local ? entity.localVertices : entity.vertices) {
       if (start) {
         minX = x;
         maxX = x;
@@ -96,11 +121,11 @@ export const findBound = (entity, local = false) => {
     if (maxX < maxx) maxX = maxx;
     if (maxY < maxy) maxY = maxy;
   }
-  return {minX, minY, maxX, maxY};
+  return { minX, minY, maxX, maxY };
 };
 
-let layerCustomColors = {axis: 'red'};
-let layerCustomWidth = {axis: '1'};
+let layerCustomColors = { axis: 'red' };
+let layerCustomWidth = { axis: '1' };
 let clickableWidth = 20;
 
 export const drawEntities = (
@@ -127,9 +152,9 @@ export const drawEntities = (
     textOffset = (s) => s.attr('x', (d) => d.x).attr('y', (d) => -d.z || 0);
     transFormFunc = (d) =>
       `translate(${d.localCenter.x},${
-        d.objectTypes.toLowerCase().includes('gen')
-          ? -d.localCenter.z
-          : -d.localCenter.z || 0
+      d.objectTypes.toLowerCase().includes('gen')
+        ? -d.localCenter.z
+        : -d.localCenter.z || 0
       })`;
   }
   if (axis === 'YZ') {
@@ -140,9 +165,9 @@ export const drawEntities = (
     textOffset = (s) => s.attr('x', (d) => d.y).attr('y', (d) => -d.z || 0);
     transFormFunc = (d) =>
       `translate(${d.localCenter.y},${
-        d.objectTypes.toLowerCase().includes('gen')
-          ? -d.localCenter.z
-          : -d.localCenter.z || 0
+      d.objectTypes.toLowerCase().includes('gen')
+        ? -d.localCenter.z
+        : -d.localCenter.z || 0
       })`;
   }
 
@@ -154,7 +179,7 @@ export const drawEntities = (
     .endAngle(
       (d) =>
         Math.PI / 2 -
-          (d.endAngle > d.startAngle ? d.endAngle : d.endAngle + 2 * Math.PI) ||
+        (d.endAngle > d.startAngle ? d.endAngle : d.endAngle + 2 * Math.PI) ||
         Math.PI * 2
     )
     .innerRadius((d) => d.radius)
@@ -166,14 +191,14 @@ export const drawEntities = (
         d.hover
           ? colorHover
           : d.selected
-          ? color
-          : layerCustomColors[d.objectTypes]
-          ? layerCustomColors[d.objectTypes]
-          : d.stroke
-          ? d.stroke
-          : layers[d.layer] && layers[d.layer].color
-          ? layers[d.layer].color
-          : text
+            ? color
+            : layerCustomColors[d.objectTypes]
+              ? layerCustomColors[d.objectTypes]
+              : d.stroke
+                ? d.stroke
+                : layers[d.layer] && layers[d.layer].color
+                  ? layers[d.layer].color
+                  : text
       )
       .attr('stroke-dasharray', (d) =>
         d.objectTypes === 'axis' ? '22 6 4 6' : 'none'
@@ -183,12 +208,12 @@ export const drawEntities = (
         d.strokeWidth
           ? d.strokeWidth
           : layerCustomWidth[d.objectTypes]
-          ? layerCustomWidth[d.objectTypes]
-          : d.layer === 'grid'
-          ? 1
-          : d.selected
-          ? 3
-          : 1
+            ? layerCustomWidth[d.objectTypes]
+            : d.layer === 'grid'
+              ? 1
+              : d.selected
+                ? 3
+                : 1
       )
       .attr('marker-end', (d) => (d.markerEnd ? 'url(#triangle)' : null))
       .attr('marker-start', (d) => (d.markerStart ? 'url(#triangle)' : null))
@@ -327,10 +352,10 @@ export const drawEntities = (
       d.selected
         ? color
         : d.stroke
-        ? d.stroke
-        : layers[d.layer] && layers[d.layer].color
-        ? layers[d.layer].color
-        : text
+          ? d.stroke
+          : layers[d.layer] && layers[d.layer].color
+            ? layers[d.layer].color
+            : text
     );
   svgTexts.on('click', (d, i) => clickHandler(d, i, d3.event));
   svgTexts.on('contextmenu', (d, i) => contextHandler(d, i, d3.event));
@@ -341,12 +366,12 @@ const polyStandards = (input) =>
   input.reduce(
     (a, b) => {
       for (let it of b) {
-        if (!isClockwise(it)) a['solid'].push(it.map(([x, y]) => ({x, y})));
-        else a['void'].push(it.map(([x, y]) => ({x, y})));
+        if (!isClockwise(it)) a['solid'].push(it.map(([x, y]) => ({ x, y })));
+        else a['void'].push(it.map(([x, y]) => ({ x, y })));
       }
       return a;
     },
-    {solid: [], void: [], all: input}
+    { solid: [], void: [], all: input }
   );
 
 const doPolyBool = (entities, func, attr) => {
@@ -371,7 +396,7 @@ const doPolyBool = (entities, func, attr) => {
       all: [v],
     };
   } else {
-    return {solid: [], void: [], all: []};
+    return { solid: [], void: [], all: [] };
   }
 };
 
@@ -457,7 +482,7 @@ export const syncSelected = (selected = null, dxf = null) => {
         isInObject2(selected, item) ||
         ignoreLayers.includes(item.layer),
     }));
-    setGlobal({dxf: dxf2});
+    setGlobal({ dxf: dxf2 });
   }
 };
 
@@ -503,7 +528,7 @@ export const customElevation = (
       properties: item.properties,
     })),
   ];
-  setGlobal({dxf});
+  setGlobal({ dxf });
 };
 
 export const customElevationSingle = (
@@ -532,7 +557,7 @@ export const customElevationSingle = (
       stroke,
     },
   ];
-  setGlobal({dxf});
+  setGlobal({ dxf });
 };
 
 // const findEquationOfPlaneFromPoints = (point1, point2, point3) => {
@@ -572,11 +597,11 @@ export const updateElevationEntities = (elevation, entities) => {
   let dxf = global.dxf;
   dxf.entities = dxf.entities.filter((i) => i.elevation !== elevation);
   dxf.entities = dxf.entities.concat(entities);
-  setGlobal({dxf});
+  setGlobal({ dxf });
 };
 
 export const getZBounds = (elevation) => {
   const global = getGlobal();
   const elevationLevels = global.elevationLevels;
-  return {min: elevationLevels[elevation], max: elevationLevels[elevation]};
+  return { min: elevationLevels[elevation], max: elevationLevels[elevation] };
 };

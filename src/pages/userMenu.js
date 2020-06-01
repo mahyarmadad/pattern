@@ -37,7 +37,6 @@ const UserMenu = () => {
           }));
           dxf = filterDXF(dxf);
           window.dxfFile = dxf;
-          // console.log('selected dxf: ', dxf);
           setGlobal({file: dxf});
         });
       } catch (e) {
